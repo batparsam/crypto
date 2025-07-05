@@ -2,15 +2,17 @@ import requests
 import os
 from datetime import datetime
 from pyrogram import Client
+from pyrogram.enums import ParseMode  # ✅ برای رفع خطای parse_mode
 
-# 🛡 مقادیر از Secrets خوانده می‌شن
+# 💬 اطلاعات از Secrets گرفته می‌شن
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 API_ID = int(os.environ["API_ID"])
 API_HASH = os.environ["API_HASH"]
 
-# 📡 کانال مستقیم
+# 🔗 آیدی کانال مستقیم وارد شده
 CHANNEL_ID = "@VPNByBaT"
 
+# 🎯 راه‌اندازی ربات Pyrogram
 app = Client("crypto_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
 def get_crypto_prices():
@@ -84,7 +86,7 @@ with app:
     msg = generate_message()
     app.send_photo(
         chat_id=CHANNEL_ID,
-        photo="live_crypto_banner.jpg",  # عکس باید کنار main.py باشه
+        photo="live_crypto_banner.jpg",  # عکس باید کنار این فایل باشه
         caption=msg,
-        parse_mode="html"
+        parse_mode=ParseMode.HTML
     )
