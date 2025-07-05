@@ -15,9 +15,10 @@ def get_usd_to_irr():
     try:
         r = requests.get("https://api.exchangerate.host/convert?from=USD&to=IRR", timeout=10)
         r.raise_for_status()
-        return r.json()["result"]
+        result = r.json()["result"]
+        return round(result)
     except:
-        return 65000  # پیش‌فرض دلار اگر API قطع شد
+        return 58000  # مقدار پیش‌فرض واقعی‌تر (مثلاً 58 هزار)
 
 def get_crypto_prices():
     url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,dogecoin,solana,cardano,tron,usd-coin&vs_currencies=usd"
@@ -53,7 +54,7 @@ def generate_message():
 ✨ <b>نرخ لحظه‌ای ارزهای دیجیتال</b>
 📅 <i>{now}</i>
 ━━━━━━━━━━━━━━━━━━
-💵 <b>دلار آزاد:</b> {format_toman(usd_price)} تومان
+💵 <b>دلار آزاد (API):</b> {format_toman(usd_price)} تومان
 ━━━━━━━━━━━━━━━━━━
 🟠 BTC: ${crypto['BTC']:,} | {format_toman(crypto['BTC'] * usd_price)} تومان
 🔵 ETH: ${crypto['ETH']:,} | {format_toman(crypto['ETH'] * usd_price)} تومان
