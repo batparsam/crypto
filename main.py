@@ -11,15 +11,6 @@ CHANNEL_ID = "@VPNByBaT"
 
 app = Client("crypto_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
-def get_usd_to_irr():
-    try:
-        r = requests.get("https://api.exchangerate.host/convert?from=USD&to=IRR", timeout=10)
-        r.raise_for_status()
-        result = r.json()["result"]
-        return round(result)
-    except:
-        return 58000  # مقدار پیش‌فرض واقعی‌تر (مثلاً 58 هزار)
-
 def get_crypto_prices():
     url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,dogecoin,solana,cardano,tron,usd-coin&vs_currencies=usd"
     try:
@@ -39,31 +30,25 @@ def get_crypto_prices():
     except:
         return None
 
-def format_toman(v):
-    return f"{int(v):,}"
-
 def generate_message():
     crypto = get_crypto_prices()
-    usd_price = get_usd_to_irr()
     now = datetime.now().strftime("%H:%M - %Y/%m/%d")
 
     if not crypto:
         return "❌ خطا در دریافت داده‌های رمزارز."
 
     msg = f"""
-✨ <b>نرخ لحظه‌ای ارزهای دیجیتال</b>
+✨ <b>قیمت لحظه‌ای ارزهای دیجیتال</b>
 📅 <i>{now}</i>
 ━━━━━━━━━━━━━━━━━━
-💵 <b>دلار آزاد (API):</b> {format_toman(usd_price)} تومان
-━━━━━━━━━━━━━━━━━━
-🟠 BTC: ${crypto['BTC']:,} | {format_toman(crypto['BTC'] * usd_price)} تومان
-🔵 ETH: ${crypto['ETH']:,} | {format_toman(crypto['ETH'] * usd_price)} تومان
-💲 USDT: ${crypto['USDT']:,} | {format_toman(crypto['USDT'] * usd_price)} تومان
-🐶 DOGE: ${crypto['DOGE']:,} | {format_toman(crypto['DOGE'] * usd_price)} تومان
-🧬 SOL: ${crypto['SOL']:,} | {format_toman(crypto['SOL'] * usd_price)} تومان
-🎯 ADA: ${crypto['ADA']:,} | {format_toman(crypto['ADA'] * usd_price)} تومان
-⚡ TRX: ${crypto['TRX']:,} | {format_toman(crypto['TRX'] * usd_price)} تومان
-🔷 USDC: ${crypto['USDC']:,} | {format_toman(crypto['USDC'] * usd_price)} تومان
+🟠 BTC: ${crypto['BTC']:,}
+🔵 ETH: ${crypto['ETH']:,}
+💲 USDT: ${crypto['USDT']:,}
+🐶 DOGE: ${crypto['DOGE']:,}
+🧬 SOL: ${crypto['SOL']:,}
+🎯 ADA: ${crypto['ADA']:,}
+⚡ TRX: ${crypto['TRX']:,}
+🔷 USDC: ${crypto['USDC']:,}
 ━━━━━━━━━━━━━━━━━━
 📡 @VPNByBaT
 """
@@ -73,7 +58,7 @@ with app:
     msg = generate_message()
     app.send_photo(
         chat_id=CHANNEL_ID,
-        photo="live_crypto_banner.jpg",
+        photo="live_crypto_banner.jpg",  # تصویر کنار فایل قرار داشته باشه
         caption=msg,
         parse_mode=ParseMode.HTML
     )
