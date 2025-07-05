@@ -3,10 +3,13 @@ import os
 from datetime import datetime
 from pyrogram import Client
 
+# 🛡 مقادیر از Secrets خوانده می‌شن
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 API_ID = int(os.environ["API_ID"])
 API_HASH = os.environ["API_HASH"]
-CHANNEL_ID = os.environ["CHANNEL_ID"]
+
+# 📡 کانال مستقیم
+CHANNEL_ID = "@VPNByBaT"
 
 app = Client("crypto_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
